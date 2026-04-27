@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>shop.com Notion 系統 — 建立與使用指南</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #e8e9ed;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, #1a1d2e 0%, #0f1117 60%, #1a1020 100%);
+      border-bottom: 1px solid #2a2d3e;
+      padding: 60px 40px 50px;
+      text-align: center;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #a78bfa;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    .header p {
+      color: #8b8fa8;
+      font-size: 16px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── Main Container ── */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 50px 30px 80px;
+    }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 60px;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #a78bfa;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(139,92,246,0.3), transparent);
+    }
+
+    /* ── Architecture Tree ── */
+    .arch-tree {
+      background: #0d0f1a;
+      border: 1px solid #2a2d3e;
+      border-radius: 14px;
+      padding: 32px 36px;
+      font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    }
+    .arch-row-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      position: relative;
+    }
+    .arch-tree-line {
+      color: #3d4060;
+      font-size: 15px;
+      white-space: pre;
+      flex-shrink: 0;
+    }
+    .arch-db-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+    }
+    .arch-db-pill.core {
+      background: rgba(139,92,246,0.15);
+      border: 1px solid rgba(139,92,246,0.45);
+    }
+    .arch-db-pill.l2 {
+      background: rgba(59,130,246,0.08);
+      border: 1px solid rgba(59,130,246,0.25);
+    }
+    .arch-db-pill.l3 {
+      background: rgba(16,185,129,0.07);
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+    .arch-db-pill .pill-name {
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .arch-db-pill.core .pill-name { color: #c4b5fd; }
+    .arch-db-pill.l2 .pill-name { color: #93c5fd; }
+    .arch-db-pill.l3 .pill-name { color: #6ee7b7; }
+    .arch-db-pill .pill-desc {
+      font-size: 12px;
+      color: #5c5f78;
+      margin-left: 4px;
+    }
+    .arch-note {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #1e2030;
+      font-size: 12px;
+      color: #4b4f6a;
+      font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', sans-serif;
+    }
+
+    /* ── DB Cards ── */
+    .db-card {
+      background: #161824;
+      border: 1px solid #2a2d3e;
+      border-radius: 14px;
+      padding: 28px 30px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .db-card:hover {
+      border-color: #3d3f5a;
+      transform: translateY(-1px);
+    }
+    .db-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .db-card-header .emoji {
+      font-size: 28px;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1e2030;
+      border-radius: 10px;
+    }
+    .db-card-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #e8e9ed;
+    }
+    .db-card-header .db-desc {
+      font-size: 13px;
+      color: #6b6f88;
+      margin-top: 2px;
+    }
+    .db-badge {
+      margin-left: auto;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.25);
+      color: #9b87d9;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* Fields Table */
+    .fields-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+    .fields-table th {
+      text-align: left;
+      color: #5c5f78;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0 12px 8px 0;
+      border-bottom: 1px solid #1e2030;
+    }
+    .fields-table td {
+      padding: 8px 12px 8px 0;
+      border-bottom: 1px solid #1a1c2a;
+      color: #bbbdce;
+      vertical-align: top;
+    }
+    .fields-table tr:last-child td { border-bottom: none; }
+    .field-name { font-weight: 600; color: #d4d5e0; white-space: nowrap; }
+    .field-type {
+      display: inline-block;
+      background: #1e2030;
+      color: #7c7f9c;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .tip-box {
+      background: rgba(59,130,246,0.06);
+      border-left: 3px solid rgba(59,130,246,0.4);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #8b8fa8;
+    }
+    .tip-box strong { color: #93c5fd; }
+
+    /* ── Steps ── */
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .step-item {
+      display: flex;
+      gap: 0;
+    }
+    .step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 52px;
+      flex-shrink: 0;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .step-num.done {
+      background: linear-gradient(135deg, #059669, #047857);
+    }
+    .step-connector {
+      width: 2px;
+      flex: 1;
+      background: #1e2235;
+      margin: 4px 0;
+      min-height: 20px;
+    }
+    .step-right {
+      flex: 1;
+      background: #161824;
+      border: 1px solid #2a2d3e;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-left: 16px;
+      margin-bottom: 16px;
+    }
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .step-header h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #e8e9ed;
+    }
+    .step-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 20px;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.3);
+      color: #a78bfa;
+      white-space: nowrap;
+    }
+    .step-tag.new { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); color: #93c5fd; }
+    .step-desc {
+      font-size: 14px;
+      color: #8b8fa8;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+    .step-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+    .step-fields-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #4b4f6a;
+      text-transform: uppercase;
+      width: 100%;
+      margin-bottom: 2px;
+    }
+    .field-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #1a1c2e;
+      border: 1px solid #272a40;
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 12px;
+      color: #9b9fb8;
+    }
+    .field-chip .chip-type {
+      color: #4b4f6a;
+      font-size: 11px;
+      font-family: monospace;
+    }
+    .step-tip {
+      background: rgba(59,130,246,0.06);
+      border-left: 3px solid rgba(59,130,246,0.4);
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      font-size: 13px;
+      color: #8b8fa8;
+      line-height: 1.6;
+    }
+    .step-tip strong { color: #93c5fd; }
+    .step-tip-warn {
+      background: rgba(234,179,8,0.06);
+      border-left: 3px solid rgba(234,179,8,0.35);
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      font-size: 13px;
+      color: #8b8fa8;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+    .step-tip-warn strong { color: #fbbf24; }
+
+    /* ── Scenarios ── */
+    .scenario-list {
+      display: grid;
+      gap: 12px;
+    }
+    .scenario-item {
+      background: #161824;
+      border: 1px solid #2a2d3e;
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+    .scenario-trigger {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e8e9ed;
+    }
+    .scenario-action {
+      font-size: 13px;
+      color: #6b6f88;
+      margin-top: 3px;
+    }
+    .scenario-arrow {
+      color: #4b4f6a;
+      font-size: 18px;
+    }
+
+    /* ── Design Principle Box ── */
+    .principle-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .principle-card {
+      background: #161824;
+      border: 1px solid #2a2d3e;
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .principle-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #a78bfa;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+    .principle-card p {
+      font-size: 13px;
+      color: #7c7f9c;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid #1e2030;
+      color: #3d3f5a;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-badge">Notion System Guide</div>
+  <h1>🗂️ shop.com Notion 系統</h1>
+  <p>建立指南 · 架構說明 · 日常使用情境<br>適合有基礎 Notion 經驗的夥伴自行建立</p>
+</div>
+
+<div class="container">
+
+  <!-- 01 設計原則 -->
+  <div class="section">
+    <div class="section-title">01 設計原則</div>
+    <div class="principle-box">
+      <div class="principle-card">
+        <h4>欄位（Properties）</h4>
+        <p>只放需要「篩選、排序、快速掃描」的結構化資料。例如狀態、日期、類型、BV數值。</p>
+      </div>
+      <div class="principle-card">
+        <h4>頁面內文（Body）</h4>
+        <p>詳細說明、長文字、圖片、產品見證照、互動紀錄，全部寫在頁面裡，不塞進欄位。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 架構總覽 -->
+  <div class="section">
+    <div class="section-title">02 系統架構（7 個資料庫）</div>
+    <div class="arch-tree">
+
+      <div class="arch-row-item">
+        <span class="arch-tree-line">   </span>
+        <span class="arch-db-pill core">
+          <span>👥</span>
+          <span class="pill-name">人脈庫</span>
+          <span class="pill-desc">— 核心樞紐，所有 DB 都 relation 到這裡</span>
+        </span>
+      </div>
+
+      <div class="arch-row-item">
+        <span class="arch-tree-line">   ├──</span>
+        <span class="arch-db-pill l2">
+          <span>✅</span>
+          <span class="pill-name">All Task</span>
+          <span class="pill-desc">— 每日任務中心</span>
+        </span>
+      </div>
+
+      <div class="arch-row-item">
+        <span class="arch-tree-line">   ├──</span>
+        <span class="arch-db-pill l2">
+          <span>🛍️</span>
+          <span class="pill-name">零售庫</span>
+          <span class="pill-desc">— BV / IBV 記錄</span>
+        </span>
+      </div>
+
+      <div class="arch-row-item">
+        <span class="arch-tree-line">   │   └──</span>
+        <span class="arch-db-pill l3">
+          <span>🏪</span>
+          <span class="pill-name">夥伴商店庫</span>
+          <span class="pill-desc">— IBV 商店管理</span>
+        </span>
+      </div>
+
+      <div class="arch-row-item">
+        <span class="arch-tree-line">   └──</span>
+        <span class="arch-db-pill l2">
+          <span>📖</span>
+          <span class="pill-name">Learn</span>
+          <span class="pill-desc">— 課程 / 會議記錄</span>
+        </span>
+      </div>
+
+      <div class="arch-row-item">
+        <span class="arch-tree-line">       └──</span>
+        <span class="arch-db-pill l3">
+          <span>📚</span>
+          <span class="pill-name">知識庫</span>
+          <span class="pill-desc">— 可複用知識點</span>
+        </span>
+      </div>
+
+      <div class="arch-row-item">
+        <span class="arch-tree-line">           └──</span>
+        <span class="arch-db-pill l3">
+          <span>🧴</span>
+          <span class="pill-name">產品庫</span>
+          <span class="pill-desc">— 產品資訊與見證</span>
+        </span>
+      </div>
+
+      <div class="arch-note">
+        紫色 = 核心樞紐｜藍色 = 人脈庫的直接關聯 DB｜綠色 = 二層關聯 DB<br>
+        箭頭方向代表「被 relation 的方向」，例如 All Task → 人脈庫 表示 All Task 裡有欄位指向人脈庫
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 各資料庫說明 -->
+  <div class="section">
+    <div class="section-title">03 各資料庫欄位說明</div>
+
+    <!-- 人脈庫 -->
+    <div class="db-card">
+      <div class="db-card-header">
+        <div class="emoji">👥</div>
+        <div>
+          <h3>人脈庫</h3>
+          <div class="db-desc">所有人際關係的統一管理，系統核心樞紐</div>
+        </div>
+        <div class="db-badge">核心 DB</div>
+      </div>
+      <table class="fields-table">
+        <tr><th>欄位名稱</th><th>類型</th><th>選項 / 說明</th></tr>
+        <tr><td class="field-name">姓名</td><td><span class="field-type">title</span></td><td>主要識別欄</td></tr>
+        <tr><td class="field-name">身份</td><td><span class="field-type">multi-select</span></td><td>顧客 / 潛在顧客 / 夥伴 / 潛在夥伴 / 講師</td></tr>
+        <tr><td class="field-name">溫度</td><td><span class="field-type">select</span></td><td>冷 / 溫 / 熱</td></tr>
+        <tr><td class="field-name">認識管道</td><td><span class="field-type">select</span></td><td>社群 / 介紹 / 活動 / 朋友 / 夥伴</td></tr>
+        <tr><td class="field-name">最後聯繫</td><td><span class="field-type">date</span></td><td>每次互動後更新</td></tr>
+        <tr><td class="field-name">關聯訂單</td><td><span class="field-type">relation → 零售庫</span></td><td>此人的購買記錄</td></tr>
+        <tr><td class="field-name">關聯任務</td><td><span class="field-type">relation → All Task</span></td><td>跟此人相關的待辦</td></tr>
+        <tr><td class="field-name">關聯學習</td><td><span class="field-type">relation → Learn</span></td><td>此人教過的課程（講師用）</td></tr>
+      </table>
+      <div class="tip-box"><strong>使用提示：</strong>新認識任何人都先建一筆。同一人可同時是顧客也是潛在夥伴 → 身份欄選多個。</div>
+    </div>
+
+    <!-- All Task -->
+    <div class="db-card">
+      <div class="db-card-header">
+        <div class="emoji">✅</div>
+        <div>
+          <h3>All Task</h3>
+          <div class="db-desc">每日任務執行中心，所有待辦事項統一入口</div>
+        </div>
+        <div class="db-badge">每日使用</div>
+      </div>
+      <table class="fields-table">
+        <tr><th>欄位名稱</th><th>類型</th><th>選項 / 說明</th></tr>
+        <tr><td class="field-name">Name</td><td><span class="field-type">title</span></td><td>任務名稱</td></tr>
+        <tr><td class="field-name">Date</td><td><span class="field-type">date</span></td><td>執行日期</td></tr>
+        <tr><td class="field-name">Status</td><td><span class="field-type">status</span></td><td>Not started / In Progress / Done / Canceled</td></tr>
+        <tr><td class="field-name">Type</td><td><span class="field-type">select</span></td><td>零售 / 學習 / 招募 / 跟進 / 其他</td></tr>
+        <tr><td class="field-name">Source</td><td><span class="field-type">select</span></td><td>社群挑戰 / 週計劃 / 手動</td></tr>
+        <tr><td class="field-name">Schedule</td><td><span class="field-type">checkbox</span></td><td>是否排入行程</td></tr>
+        <tr><td class="field-name">關聯人脈</td><td><span class="field-type">relation → 人脈庫</span></td><td>此任務關聯的人</td></tr>
+      </table>
+      <div class="tip-box"><strong>黃金原則：</strong>所有待辦一律進這個 DB，不另建清單。新增時必填：Name、Date、Type、Source。</div>
+    </div>
+
+    <!-- 零售庫 -->
+    <div class="db-card">
+      <div class="db-card-header">
+        <div class="emoji">🛍️</div>
+        <div>
+          <h3>零售庫</h3>
+          <div class="db-desc">所有零售交易記錄，包含 BV 產品購買與 IBV 夥伴商店消費</div>
+        </div>
+      </div>
+      <table class="fields-table">
+        <tr><th>欄位名稱</th><th>類型</th><th>選項 / 說明</th></tr>
+        <tr><td class="field-name">品項/訂單名稱</td><td><span class="field-type">title</span></td><td></td></tr>
+        <tr><td class="field-name">類型</td><td><span class="field-type">select</span></td><td>BV購買 / IBV消費</td></tr>
+        <tr><td class="field-name">顧客</td><td><span class="field-type">relation → 人脈庫</span></td><td>誰買的</td></tr>
+        <tr><td class="field-name">日期</td><td><span class="field-type">date</span></td><td>購買日</td></tr>
+        <tr><td class="field-name">金額</td><td><span class="field-type">number</span></td><td>台幣</td></tr>
+        <tr><td class="field-name">BV</td><td><span class="field-type">number</span></td><td>shop.com 獨家品牌產品產生的 BV</td></tr>
+        <tr><td class="field-name">IBV</td><td><span class="field-type">number</span></td><td>夥伴商店消費產生的 IBV</td></tr>
+        <tr><td class="field-name">狀態</td><td><span class="field-type">select</span></td><td>待確認 / 已下單 / 完成</td></tr>
+        <tr><td class="field-name">關聯商店</td><td><span class="field-type">relation → 夥伴商店庫</span></td><td>若為 IBV 消費時填入</td></tr>
+      </table>
+      <div class="tip-box"><strong>使用提示：</strong>記錄購買後，記得到 All Task 建立第 1/3/7/14/21 天跟進任務。</div>
+    </div>
+
+    <!-- Learn -->
+    <div class="db-card">
+      <div class="db-card-header">
+        <div class="emoji">📖</div>
+        <div>
+          <h3>Learn</h3>
+          <div class="db-desc">所有學習事件記錄：課程、mentor 會議、Coring、錄音檔</div>
+        </div>
+      </div>
+      <table class="fields-table">
+        <tr><th>欄位名稱</th><th>類型</th><th>選項 / 說明</th></tr>
+        <tr><td class="field-name">課程/會議名稱</td><td><span class="field-type">title</span></td><td></td></tr>
+        <tr><td class="field-name">類型</td><td><span class="field-type">select</span></td><td>課程 / mentor會議 / 團隊會議 / 錄音檔</td></tr>
+        <tr><td class="field-name">日期</td><td><span class="field-type">date</span></td><td></td></tr>
+        <tr><td class="field-name">附件/連結</td><td><span class="field-type">URL</span></td><td>錄音檔連結、簡報連結</td></tr>
+        <tr><td class="field-name">講師/對象</td><td><span class="field-type">relation → 人脈庫</span></td><td>誰教的或跟誰開會</td></tr>
+        <tr><td class="field-name">產出知識條目</td><td><span class="field-type">relation → 知識庫</span></td><td>這次學習提煉出的知識點</td></tr>
+      </table>
+      <div class="tip-box"><strong>使用提示：</strong>原始筆記、功課、待行動事項寫在頁面內文。整理完再把重點提煉到知識庫。</div>
+    </div>
+
+    <!-- 知識庫 -->
+    <div class="db-card">
+      <div class="db-card-header">
+        <div class="emoji">📚</div>
+        <div>
+          <h3>知識庫</h3>
+          <div class="db-desc">從學習中提煉的可複用知識點，分類管理方便查找分享</div>
+        </div>
+      </div>
+      <table class="fields-table">
+        <tr><th>欄位名稱</th><th>類型</th><th>選項 / 說明</th></tr>
+        <tr><td class="field-name">條目名稱</td><td><span class="field-type">title</span></td><td></td></tr>
+        <tr><td class="field-name">分類</td><td><span class="field-type">select</span></td><td>態度與知識 / 目標設定 / 零售 / 物色篩選 / 跟進ABC</td></tr>
+        <tr><td class="field-name">來源課程</td><td><span class="field-type">relation → Learn</span></td><td>從哪堂課/會議提煉</td></tr>
+        <tr><td class="field-name">來源講師</td><td><span class="field-type">relation → 人脈庫</span></td><td>誰教的</td></tr>
+        <tr><td class="field-name">標籤</td><td><span class="field-type">multi-select</span></td><td>話術 / 心態 / 行動</td></tr>
+      </table>
+      <div class="tip-box"><strong>使用提示：</strong>一筆 Learn 可產出多筆知識條目。跟顧客分享前先在這裡找相關條目。</div>
+    </div>
+
+    <!-- 產品庫 -->
+    <div class="db-card">
+      <div class="db-card-header">
+        <div class="emoji">🧴</div>
+        <div>
+          <h3>產品庫</h3>
+          <div class="db-desc">shop.com 獨家品牌 BV 產品的知識管理，含話術與見證</div>
+        </div>
+      </div>
+      <table class="fields-table">
+        <tr><th>欄位名稱</th><th>類型</th><th>選項 / 說明</th></tr>
+        <tr><td class="field-name">產品名稱</td><td><span class="field-type">title</span></td><td></td></tr>
+        <tr><td class="field-name">系列</td><td><span class="field-type">select</span></td><td>Isotonix / TLS / Motives / 其他</td></tr>
+        <tr><td class="field-name">分類</td><td><span class="field-type">select</span></td><td>健康 / 美容 / 家居 / 其他</td></tr>
+        <tr><td class="field-name">BV值</td><td><span class="field-type">number</span></td><td>每單位 BV</td></tr>
+        <tr><td class="field-name">適用對象</td><td><span class="field-type">multi-select</span></td><td>一般 / 女性 / 運動族群 / 銀髮族</td></tr>
+        <tr><td class="field-name">關聯知識條目</td><td><span class="field-type">relation → 知識庫</span></td><td>相關知識點</td></tr>
+        <tr><td class="field-name">關聯零售記錄</td><td><span class="field-type">relation → 零售庫</span></td><td>誰買過這個產品</td></tr>
+      </table>
+      <div class="tip-box"><strong>使用提示：</strong>核心賣點、零售話術、個人見證（含照片）、他人見證都寫在頁面內文，不塞進欄位。</div>
+    </div>
+
+    <!-- 夥伴商店庫 -->
+    <div class="db-card">
+      <div class="db-card-header">
+        <div class="emoji">🏪</div>
+        <div>
+          <h3>夥伴商店庫</h3>
+          <div class="db-desc">SHOP.COM 合作夥伴商店，追蹤 IBV 來源</div>
+        </div>
+      </div>
+      <table class="fields-table">
+        <tr><th>欄位名稱</th><th>類型</th><th>選項 / 說明</th></tr>
+        <tr><td class="field-name">商店名稱</td><td><span class="field-type">title</span></td><td></td></tr>
+        <tr><td class="field-name">分類</td><td><span class="field-type">select</span></td><td>餐飲 / 電商 / 旅遊 / 日用品 / 娛樂 / 其他</td></tr>
+        <tr><td class="field-name">IBV說明</td><td><span class="field-type">text</span></td><td>一句話說明回饋方式</td></tr>
+        <tr><td class="field-name">適合推薦給</td><td><span class="field-type">multi-select</span></td><td>外食族 / 旅遊族 / 網購族 / 全部</td></tr>
+        <tr><td class="field-name">關聯零售記錄</td><td><span class="field-type">relation → 零售庫</span></td><td>誰透過這間店產生 IBV</td></tr>
+      </table>
+      <div class="tip-box"><strong>使用提示：</strong>詳細體驗心得、推薦話術寫在頁面內文，推薦顧客時直接用分類或「適合推薦給」篩選。</div>
+    </div>
+  </div>
+
+  <!-- 04 建立步驟 -->
+  <div class="section">
+    <div class="section-title">04 建立步驟</div>
+    <div class="steps-list">
+
+      <!-- Step 1 -->
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">1</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-right">
+          <div class="step-header">
+            <h4>👥 建立人脈庫</h4>
+            <span class="step-tag new">全新建立</span>
+          </div>
+          <p class="step-desc">整套系統的核心樞紐，<strong style="color:#d4d5e0">務必最先建立</strong>。其他所有 DB 的 relation 都指向這裡，如果先建其他 DB，relation 欄位就無法正確設定目標。</p>
+          <div class="step-fields">
+            <div class="step-fields-label">欄位清單</div>
+            <span class="field-chip">姓名 <span class="chip-type">title</span></span>
+            <span class="field-chip">身份 <span class="chip-type">multi-select</span></span>
+            <span class="field-chip">溫度 <span class="chip-type">select</span></span>
+            <span class="field-chip">認識管道 <span class="chip-type">select</span></span>
+            <span class="field-chip">最後聯繫 <span class="chip-type">date</span></span>
+            <span class="field-chip">關聯訂單 <span class="chip-type">→ 零售庫</span></span>
+            <span class="field-chip">關聯任務 <span class="chip-type">→ All Task</span></span>
+            <span class="field-chip">關聯學習 <span class="chip-type">→ Learn</span></span>
+          </div>
+          <div class="step-tip"><strong>💡 提示：</strong>relation 欄位（關聯訂單、關聯任務、關聯學習）可先留著，等後續 DB 建完後再回來設定 relation 目標。</div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">2</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-right">
+          <div class="step-header">
+            <h4>✅ 建立 All Task</h4>
+            <span class="step-tag new">全新建立</span>
+          </div>
+          <p class="step-desc">所有待辦事項的唯一入口。不管是跟進顧客、課後功課、招募任務，全部統一建在這裡，不另開其他清單，才能保持系統整潔。</p>
+          <div class="step-fields">
+            <div class="step-fields-label">欄位清單</div>
+            <span class="field-chip">Name <span class="chip-type">title</span></span>
+            <span class="field-chip">Date <span class="chip-type">date</span></span>
+            <span class="field-chip">Status <span class="chip-type">status</span></span>
+            <span class="field-chip">Type <span class="chip-type">select</span></span>
+            <span class="field-chip">Source <span class="chip-type">select</span></span>
+            <span class="field-chip">Schedule <span class="chip-type">checkbox</span></span>
+            <span class="field-chip">關聯人脈 <span class="chip-type">→ 人脈庫</span></span>
+          </div>
+          <div class="step-tip"><strong>💡 Type 選項：</strong>零售 / 學習 / 招募 / 跟進 / 其他</div>
+          <div class="step-tip" style="margin-top:8px"><strong>💡 Source 選項：</strong>社群挑戰 / 週計劃 / 手動　（新增任務時，Source 一律選「手動」）</div>
+          <div class="step-tip-warn"><strong>⚠️ 建完後：</strong>回到人脈庫，把「關聯任務」relation 欄位的目標設定為 All Task。</div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">3</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-right">
+          <div class="step-header">
+            <h4>🛍️ 建立零售庫</h4>
+            <span class="step-tag new">全新建立</span>
+          </div>
+          <p class="step-desc">記錄所有零售交易，分兩種類型：顧客購買shop.com 獨家品牌產品（BV 購買）、自己或顧客在夥伴商店消費（IBV 消費）。兩種都要記，才能完整追蹤 MUFO 進度。</p>
+          <div class="step-fields">
+            <div class="step-fields-label">欄位清單</div>
+            <span class="field-chip">品項/訂單名稱 <span class="chip-type">title</span></span>
+            <span class="field-chip">類型 <span class="chip-type">select</span></span>
+            <span class="field-chip">顧客 <span class="chip-type">→ 人脈庫</span></span>
+            <span class="field-chip">日期 <span class="chip-type">date</span></span>
+            <span class="field-chip">金額 <span class="chip-type">number</span></span>
+            <span class="field-chip">BV <span class="chip-type">number</span></span>
+            <span class="field-chip">IBV <span class="chip-type">number</span></span>
+            <span class="field-chip">狀態 <span class="chip-type">select</span></span>
+            <span class="field-chip">關聯商店 <span class="chip-type">→ 夥伴商店庫</span></span>
+          </div>
+          <div class="step-tip"><strong>💡 類型選項：</strong>BV購買 / IBV消費　｜　<strong>狀態選項：</strong>待確認 / 已下單 / 完成</div>
+          <div class="step-tip-warn"><strong>⚠️ 注意：</strong>「關聯商店」先建欄位即可，等第 7 步夥伴商店庫建完後再回來設定 relation 目標。建完後也記得回人脈庫把「關聯訂單」設定好。</div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">4</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-right">
+          <div class="step-header">
+            <h4>📖 建立 Learn</h4>
+            <span class="step-tag new">全新建立</span>
+          </div>
+          <p class="step-desc">所有學習事件的原始記錄，包含 Coring 課程、mentor 會議、團隊會議、錄音檔。上完課的重點筆記和待辦功課都寫在頁面內文，提煉後的知識點再移進知識庫。</p>
+          <div class="step-fields">
+            <div class="step-fields-label">欄位清單</div>
+            <span class="field-chip">課程/會議名稱 <span class="chip-type">title</span></span>
+            <span class="field-chip">類型 <span class="chip-type">select</span></span>
+            <span class="field-chip">日期 <span class="chip-type">date</span></span>
+            <span class="field-chip">附件/連結 <span class="chip-type">URL</span></span>
+            <span class="field-chip">講師/對象 <span class="chip-type">→ 人脈庫</span></span>
+            <span class="field-chip">產出知識條目 <span class="chip-type">→ 知識庫</span></span>
+          </div>
+          <div class="step-tip"><strong>💡 類型選項：</strong>課程 / mentor會議 / 團隊會議 / 錄音檔</div>
+          <div class="step-tip-warn"><strong>⚠️ 注意：</strong>「產出知識條目」先建欄位即可，等第 5 步知識庫建完後再設定 relation 目標。建完後回人脈庫把「關聯學習」設定好。</div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">5</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-right">
+          <div class="step-header">
+            <h4>📚 建立知識庫</h4>
+            <span class="step-tag new">全新建立</span>
+          </div>
+          <p class="step-desc">存放從 Learn 提煉出的可複用知識點，一筆 Learn 課程可產出多筆知識條目。分類管理後，未來跟顧客或新夥伴分享時可以快速查找。</p>
+          <div class="step-fields">
+            <div class="step-fields-label">欄位清單</div>
+            <span class="field-chip">條目名稱 <span class="chip-type">title</span></span>
+            <span class="field-chip">分類 <span class="chip-type">select</span></span>
+            <span class="field-chip">來源課程 <span class="chip-type">→ Learn</span></span>
+            <span class="field-chip">來源講師 <span class="chip-type">→ 人脈庫</span></span>
+            <span class="field-chip">標籤 <span class="chip-type">multi-select</span></span>
+          </div>
+          <div class="step-tip"><strong>💡 分類選項：</strong>態度與知識 / 目標設定 / 零售 / 物色篩選 / 跟進ABC　｜　<strong>標籤：</strong>話術 / 心態 / 行動</div>
+          <div class="step-tip-warn"><strong>⚠️ 建完後：</strong>回到 Learn，把「產出知識條目」relation 欄位的目標設定為知識庫。</div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">6</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-right">
+          <div class="step-header">
+            <h4>🧴 建立產品庫</h4>
+            <span class="step-tag new">全新建立</span>
+          </div>
+          <p class="step-desc">shop.com 獨家品牌 BV 產品的知識管理中心。欄位負責結構化資訊（系列、BV值、適用對象），頁面內文則存放核心賣點、個人使用見證（含照片）、夥伴分享的他人見證。</p>
+          <div class="step-fields">
+            <div class="step-fields-label">欄位清單</div>
+            <span class="field-chip">產品名稱 <span class="chip-type">title</span></span>
+            <span class="field-chip">系列 <span class="chip-type">select</span></span>
+            <span class="field-chip">分類 <span class="chip-type">select</span></span>
+            <span class="field-chip">BV值 <span class="chip-type">number</span></span>
+            <span class="field-chip">適用對象 <span class="chip-type">multi-select</span></span>
+            <span class="field-chip">關聯知識條目 <span class="chip-type">→ 知識庫</span></span>
+            <span class="field-chip">關聯零售記錄 <span class="chip-type">→ 零售庫</span></span>
+          </div>
+          <div class="step-tip"><strong>💡 系列選項：</strong>Isotonix / TLS / Motives / 其他　｜　<strong>分類：</strong>健康 / 美容 / 家居 / 其他</div>
+          <div class="step-tip" style="margin-top:8px"><strong>💡 建立方式：</strong>不需要一次建完所有產品，從自己最熟悉或最常推薦的 3–5 個產品開始，逐步補充。</div>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num done">7</div>
+        </div>
+        <div class="step-right" style="border-color: rgba(16,185,129,0.25); background: rgba(16,185,129,0.04); margin-bottom:0;">
+          <div class="step-header">
+            <h4>🏪 建立夥伴商店庫</h4>
+            <span class="step-tag" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.3);color:#6ee7b7;">最後完成</span>
+          </div>
+          <p class="step-desc">記錄所有 SHOP.COM 合作夥伴商店，方便推薦顧客到對應商店消費以產生 IBV。用「分類」或「適合推薦給」篩選，可以快速找到最適合推薦的商店。</p>
+          <div class="step-fields">
+            <div class="step-fields-label">欄位清單</div>
+            <span class="field-chip">商店名稱 <span class="chip-type">title</span></span>
+            <span class="field-chip">分類 <span class="chip-type">select</span></span>
+            <span class="field-chip">IBV說明 <span class="chip-type">text</span></span>
+            <span class="field-chip">適合推薦給 <span class="chip-type">multi-select</span></span>
+            <span class="field-chip">關聯零售記錄 <span class="chip-type">→ 零售庫</span></span>
+          </div>
+          <div class="step-tip"><strong>💡 分類選項：</strong>餐飲 / 電商 / 旅遊 / 日用品 / 娛樂 / 其他　｜　<strong>適合推薦給：</strong>外食族 / 旅遊族 / 網購族 / 全部</div>
+          <div class="step-tip-warn"><strong>⚠️ 最後收尾：</strong>建完後回到零售庫，把「關聯商店」relation 欄位的目標設定為夥伴商店庫，整套系統正式完成。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 05 日常使用情境 -->
+  <div class="section">
+    <div class="section-title">05 日常使用情境對照</div>
+    <div class="scenario-list">
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">新認識任何人</div>
+          <div class="scenario-action">→ 人脈庫建一筆，選身份與溫度</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">顧客購買產品後</div>
+          <div class="scenario-action">→ 零售庫記錄訂單；All Task 建第 1 / 3 / 7 / 14 / 21 天跟進任務，relation 到顧客</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">新夥伴加盟</div>
+          <div class="scenario-action">→ 人脈庫確認存在（或新建），身份選「夥伴」；All Task 建後續跟進任務</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">Coring 上課</div>
+          <div class="scenario-action">→ Learn 建課程記錄，課後功課在 All Task 建 Task 並 relation 到該課程</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">整理課程筆記完成後</div>
+          <div class="scenario-action">→ 把每個獨立知識點各建一筆到知識庫，relation 回該堂 Learn 記錄</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">個人使用產品有感</div>
+          <div class="scenario-action">→ 到產品庫對應產品頁面內文新增「個人見證」區塊，貼照片 + 文字</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">逛夥伴商店消費</div>
+          <div class="scenario-action">→ 夥伴商店庫頁面記體驗心得；零售庫建 IBV 消費記錄，relation 到該商店</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">早上確認今日待辦</div>
+          <div class="scenario-action">→ All Task 開 Filter，Date = Today，掃描未完成任務</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+      <div class="scenario-item">
+        <div>
+          <div class="scenario-trigger">想推薦顧客去夥伴商店</div>
+          <div class="scenario-action">→ 夥伴商店庫用「分類」或「適合推薦給」篩選，找到對應商店直接分享</div>
+        </div>
+        <div class="scenario-arrow">→</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  shop.com Notion 系統 · 建立指南 v1.0 · 2026-04
+</div>
+
+</body>
+</html>
