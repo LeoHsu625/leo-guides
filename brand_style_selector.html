@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leo 個人品牌 · 風格選單</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: #F0EDE7;
+            color: #2C2C2C;
+            padding: 48px 24px 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 52px;
+        }
+
+        header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 13px;
+            color: #999;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 680px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.09);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+        }
+
+        /* IG Mock */
+        .ig-mock {
+            aspect-ratio: 1 / 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 36px;
+            overflow: hidden;
+        }
+
+        .corner {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+        }
+        .corner.tl { top: 18px; left: 18px; border-top: 1.5px solid; border-left: 1.5px solid; }
+        .corner.br { bottom: 18px; right: 18px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+        .mock-tag {
+            font-size: 10px;
+            letter-spacing: 0.22em;
+            font-weight: 500;
+            margin-bottom: 18px;
+        }
+
+        .mock-headline {
+            font-size: 22px;
+            text-align: center;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .mock-line {
+            width: 40px;
+            height: 1.5px;
+            margin: 0 auto 16px;
+        }
+
+        .mock-sub {
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            font-weight: 300;
+            text-align: center;
+        }
+
+        /* Card Info */
+        .card-info {
+            padding: 18px 22px 20px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .info-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .style-name {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .style-tag {
+            font-size: 10px;
+            font-weight: 500;
+            background: #F2EDE7;
+            color: #888;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.05em;
+        }
+
+        .swatches {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .swatch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .swatch-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .swatch-hex {
+            font-size: 9px;
+            color: #BBB;
+            letter-spacing: 0.03em;
+        }
+
+        .style-desc {
+            font-size: 12px;
+            color: #888;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+
+        /* ───── A 霧感莫蘭迪 ───── */
+        .a .ig-mock { background: #EDE8E1; }
+        .a .corner { border-color: #C9A99A; opacity: 0.55; }
+        .a .mock-tag { color: #9E8E8A; }
+        .a .mock-headline { font-family: 'Noto Serif TC', serif; font-weight: 400; color: #5C4A42; letter-spacing: 0.06em; }
+        .a .mock-line { background: #C9A99A; }
+        .a .mock-sub { color: #A89088; }
+
+        /* ───── B 深靛 × 奶霧 ───── */
+        .b .ig-mock { background: #2D3561; }
+        .b .corner { border-color: #C9A84C; opacity: 0.7; width: 38px; height: 38px; }
+        .b .mock-tag { color: #C9A84C; letter-spacing: 0.28em; }
+        .b .mock-headline { font-family: 'Inter', sans-serif; font-weight: 900; color: #F5F0E8; letter-spacing: 0.02em; }
+        .b .mock-line { background: #C9A84C; height: 2px; width: 56px; }
+        .b .mock-sub { color: rgba(245,240,232,0.55); }
+
+        /* ───── C 碳黑 × 珊瑚 ───── */
+        .c .ig-mock { background: #1C1C1C; }
+        .c .corner { border-color: #E8714A; opacity: 0.85; }
+        .c .mock-tag { color: #E8714A; letter-spacing: 0.2em; }
+        .c .mock-headline { font-family: 'Inter', sans-serif; font-weight: 800; color: #F7F3EE; font-size: 24px; }
+        .c .mock-line { background: #E8714A; height: 3px; width: 48px; }
+        .c .mock-sub { color: rgba(247,243,238,0.45); }
+
+        /* ───── D 橄欖 × 暖米 ───── */
+        .d .ig-mock { background: #EDE0C8; }
+        .d .corner { border-color: #4A5240; opacity: 0.3; }
+        .d .mock-tag { color: #4A5240; letter-spacing: 0.18em; }
+        .d .mock-headline { font-family: 'Noto Serif TC', serif; font-weight: 600; color: #3B2F2F; letter-spacing: 0.05em; font-size: 21px; }
+        .d .mock-line { background: #4A5240; opacity: 0.45; }
+        .d .mock-sub { color: #7A6A58; }
+
+        /* ───── E 煙燻玫瑰 × 鐵灰 ───── */
+        .e .ig-mock { background: #3D3D3D; }
+        .e .corner { border-color: #A0616A; opacity: 0.65; }
+        .e .mock-tag { color: #A0616A; letter-spacing: 0.22em; }
+        .e .mock-headline { font-family: 'Noto Sans TC', sans-serif; font-weight: 700; color: #F0EDED; letter-spacing: 0.04em; }
+        .e .mock-line { background: #A0616A; }
+        .e .mock-sub { color: rgba(240,237,237,0.45); }
+
+        /* ───── F 午夜藍 × 暖杏 ───── */
+        .f .ig-mock { background: #1A2744; }
+        .f .corner { border-color: #F2C49B; opacity: 0.55; }
+        .f .mock-tag { color: #F2C49B; letter-spacing: 0.22em; }
+        .f .mock-headline { font-family: 'Inter', sans-serif; font-weight: 700; color: #FAFAFA; letter-spacing: 0.01em; }
+        .f .mock-line { background: #F2C49B; height: 2px; width: 52px; }
+        .f .mock-sub { color: rgba(250,250,250,0.45); }
+
+        /* ───── G 岩灰 × 陶橘 ───── */
+        .g .ig-mock { background: #F4EFE8; }
+        .g .corner { border-color: #4A4A4A; opacity: 0.22; }
+        .g .mock-tag { color: #D4622A; letter-spacing: 0.22em; }
+        .g .mock-headline { font-family: 'Noto Sans TC', sans-serif; font-weight: 900; color: #4A4A4A; font-size: 24px; }
+        .g .mock-line { background: #D4622A; height: 3px; width: 48px; }
+        .g .mock-sub { color: #9A9A9A; }
+
+        /* ───── H 深森綠 × 象牙 ───── */
+        .h .ig-mock { background: #2C4A35; }
+        .h .corner { border-color: #B5963E; opacity: 0.65; }
+        .h .mock-tag { color: #B5963E; letter-spacing: 0.24em; }
+        .h .mock-headline { font-family: 'Noto Serif TC', serif; font-weight: 600; color: #F5F0E0; letter-spacing: 0.07em; font-size: 21px; }
+        .h .mock-line { background: #B5963E; }
+        .h .mock-sub { color: rgba(245,240,224,0.5); }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Leo 個人品牌 · 風格選單</h1>
+    <p>選出最靠近你的 1–3 個方向</p>
+</header>
+
+<div class="grid">
+
+    <!-- A -->
+    <div class="card a">
+        <div class="ig-mock">
+            <div class="corner tl"></div>
+            <div class="corner br"></div>
+            <div class="mock-tag">LIFESTYLE · REAL</div>
+            <div class="mock-headline">慢下來，<br>才看得見方向</div>
+            <div class="mock-line"></div>
+            <div class="mock-sub">Leo · 數位轉型 × 生活探索</div>
+        </div>
+        <div class="card-info">
+            <div class="info-top">
+                <div class="style-name">A｜霧感莫蘭迪</div>
+                <div class="style-tag">低調質感</div>
+            </div>
+            <div class="swatches">
+                <div class="swatch"><div class="swatch-dot" style="background:#C9A99A"></div><div class="swatch-hex">#C9A99A</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#EDE8E1"></div><div class="swatch-hex">#EDE8E1</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#8E8E8E"></div><div class="swatch-hex">#8E8E8E</div></div>
+            </div>
+            <div class="style-desc">歐系美學、優雅留白，適合質感生活內容，溫柔但有品味</div>
+        </div>
+    </div>
+
+    <!-- B -->
+    <div class="card b">
+        <div class="ig-mock">
+            <div class="corner tl"></div>
+            <div class="corner br"></div>
+            <div class="mock-tag">KNOWLEDGE</div>
+            <div class="mock-headline">AI 時代，<br>懂得用才是優勢</div>
+            <div class="mock-line"></div>
+            <div class="mock-sub">Leo · AI 應用 × 數位轉型</div>
+        </div>
+        <div class="card-info">
+            <div class="info-top">
+                <div class="style-name">B｜深靛 × 奶霧</div>
+                <div class="style-tag">知識型創作者</div>
+            </div>
+            <div class="swatches">
+                <div class="swatch"><div class="swatch-dot" style="background:#2D3561"></div><div class="swatch-hex">#2D3561</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#F5F0E8"></div><div class="swatch-hex">#F5F0E8</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#C9A84C"></div><div class="swatch-hex">#C9A84C</div></div>
+            </div>
+            <div class="style-desc">沉穩有份量，金色點綴，讓人覺得「這個人懂、值得信任」</div>
+        </div>
+    </div>
+
+    <!-- C -->
+    <div class="card c">
+        <div class="ig-mock">
+            <div class="corner tl"></div>
+            <div class="corner br"></div>
+            <div class="mock-tag">LIFE · CHOICE</div>
+            <div class="mock-headline">我選擇<br>掌控自己的人生</div>
+            <div class="mock-line"></div>
+            <div class="mock-sub">Leo · 斜槓 × 數位轉型</div>
+        </div>
+        <div class="card-info">
+            <div class="info-top">
+                <div class="style-name">C｜碳黑 × 珊瑚</div>
+                <div class="style-tag">有個性有溫度</div>
+            </div>
+            <div class="swatches">
+                <div class="swatch"><div class="swatch-dot" style="background:#1C1C1C"></div><div class="swatch-hex">#1C1C1C</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#E8714A"></div><div class="swatch-hex">#E8714A</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#F7F3EE"></div><div class="swatch-hex">#F7F3EE</div></div>
+            </div>
+            <div class="style-desc">現代感強、衝擊力高，珊瑚橘帶入溫度，親切但有個性</div>
+        </div>
+    </div>
+
+    <!-- D -->
+    <div class="card d">
+        <div class="ig-mock">
+            <div class="corner tl"></div>
+            <div class="corner br"></div>
+            <div class="mock-tag">DAILY · REAL</div>
+            <div class="mock-headline">平凡的一天，<br>也值得認真過</div>
+            <div class="mock-line"></div>
+            <div class="mock-sub">Leo · 生活探索 × 成長記錄</div>
+        </div>
+        <div class="card-info">
+            <div class="info-top">
+                <div class="style-name">D｜橄欖 × 暖米</div>
+                <div class="style-tag">自然真實感</div>
+            </div>
+            <div class="swatches">
+                <div class="swatch"><div class="swatch-dot" style="background:#4A5240"></div><div class="swatch-hex">#4A5240</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#EDE0C8"></div><div class="swatch-hex">#EDE0C8</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#3B2F2F"></div><div class="swatch-hex">#3B2F2F</div></div>
+            </div>
+            <div class="style-desc">接地氣、有思想，讓人追蹤的是你這個人，而不只是內容</div>
+        </div>
+    </div>
+
+    <!-- E -->
+    <div class="card e">
+        <div class="ig-mock">
+            <div class="corner tl"></div>
+            <div class="corner br"></div>
+            <div class="mock-tag">IDENTITY</div>
+            <div class="mock-headline">做自己，<br>本來就不容易</div>
+            <div class="mock-line"></div>
+            <div class="mock-sub">Leo · 真實 × 個人品牌</div>
+        </div>
+        <div class="card-info">
+            <div class="info-top">
+                <div class="style-name">E｜煙燻玫瑰 × 鐵灰</div>
+                <div class="style-tag">強烈記憶點</div>
+            </div>
+            <div class="swatches">
+                <div class="swatch"><div class="swatch-dot" style="background:#A0616A"></div><div class="swatch-hex">#A0616A</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#3D3D3D"></div><div class="swatch-hex">#3D3D3D</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#F0EDED"></div><div class="swatch-hex">#F0EDED</div></div>
+            </div>
+            <div class="style-desc">獨特、有品味、不走常見路線，看一眼就記得住</div>
+        </div>
+    </div>
+
+    <!-- F -->
+    <div class="card f">
+        <div class="ig-mock">
+            <div class="corner tl"></div>
+            <div class="corner br"></div>
+            <div class="mock-tag">FOCUS · GROWTH</div>
+            <div class="mock-headline">每一步，<br>都是選擇的結果</div>
+            <div class="mock-line"></div>
+            <div class="mock-sub">Leo · 成長 × 數位轉型</div>
+        </div>
+        <div class="card-info">
+            <div class="info-top">
+                <div class="style-name">F｜午夜藍 × 暖杏</div>
+                <div class="style-tag">沉穩又溫暖</div>
+            </div>
+            <div class="swatches">
+                <div class="swatch"><div class="swatch-dot" style="background:#1A2744"></div><div class="swatch-hex">#1A2744</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#F2C49B"></div><div class="swatch-hex">#F2C49B</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#FAFAFA"></div><div class="swatch-hex">#FAFAFA</div></div>
+            </div>
+            <div class="style-desc">深夜思考感，傳遞「我在認真做一件事」的踏實與溫度</div>
+        </div>
+    </div>
+
+    <!-- G -->
+    <div class="card g">
+        <div class="ig-mock">
+            <div class="corner tl"></div>
+            <div class="corner br"></div>
+            <div class="mock-tag">EXECUTE · BUILD</div>
+            <div class="mock-headline">說到做到，<br>這就是態度</div>
+            <div class="mock-line"></div>
+            <div class="mock-sub">Leo · 執行力 × 成長記錄</div>
+        </div>
+        <div class="card-info">
+            <div class="info-top">
+                <div class="style-name">G｜岩灰 × 陶橘</div>
+                <div class="style-tag">踏實執行力</div>
+            </div>
+            <div class="swatches">
+                <div class="swatch"><div class="swatch-dot" style="background:#4A4A4A"></div><div class="swatch-hex">#4A4A4A</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#D4622A"></div><div class="swatch-hex">#D4622A</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#F4EFE8"></div><div class="swatch-hex">#F4EFE8</div></div>
+            </div>
+            <div class="style-desc">務實有力、陶橘帶活力，讓人感覺你做事靠得住</div>
+        </div>
+    </div>
+
+    <!-- H -->
+    <div class="card h">
+        <div class="ig-mock">
+            <div class="corner tl"></div>
+            <div class="corner br"></div>
+            <div class="mock-tag">ESSENCE</div>
+            <div class="mock-headline">長期主義，<br>是我選擇的路</div>
+            <div class="mock-line"></div>
+            <div class="mock-sub">Leo · 品牌建立 × 數位轉型</div>
+        </div>
+        <div class="card-info">
+            <div class="info-top">
+                <div class="style-name">H｜深森綠 × 象牙</div>
+                <div class="style-tag">長期可信度</div>
+            </div>
+            <div class="swatches">
+                <div class="swatch"><div class="swatch-dot" style="background:#2C4A35"></div><div class="swatch-hex">#2C4A35</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#F5F0E0"></div><div class="swatch-hex">#F5F0E0</div></div>
+                <div class="swatch"><div class="swatch-dot" style="background:#B5963E"></div><div class="swatch-hex">#B5963E</div></div>
+            </div>
+            <div class="style-desc">穩重、沉著、古典質感，讓人覺得你是做長線的人</div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
