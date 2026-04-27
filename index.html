@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leo Guides</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans TC', 'Segoe UI', sans-serif;
+      background: #0f1117;
+      color: #e8e9ed;
+      min-height: 100vh;
+      padding: 60px 30px;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .header {
+      margin-bottom: 48px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: #5c5f78;
+    }
+
+    /* ── Category ── */
+    .category {
+      margin-bottom: 36px;
+    }
+
+    .category-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #a78bfa;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .category-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(139,92,246,0.3), transparent);
+    }
+
+    /* ── Guide Card ── */
+    .guide-card {
+      background: #161824;
+      border: 1px solid #2a2d3e;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .guide-card:hover {
+      border-color: rgba(139,92,246,0.5);
+      background: #1a1c2e;
+    }
+
+    .guide-icon {
+      font-size: 24px;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      background: #1e2030;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .guide-info {
+      flex: 1;
+    }
+
+    .guide-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: #e8e9ed;
+      margin-bottom: 3px;
+    }
+
+    .guide-desc {
+      font-size: 13px;
+      color: #5c5f78;
+    }
+
+    .guide-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .guide-date {
+      font-size: 11px;
+      color: #3d3f5a;
+    }
+
+    .guide-url {
+      font-size: 11px;
+      color: #4b4f6a;
+      font-family: monospace;
+    }
+
+    .arrow {
+      color: #3d3f5a;
+      font-size: 16px;
+      margin-left: 8px;
+    }
+
+    .empty {
+      background: #161824;
+      border: 1px dashed #2a2d3e;
+      border-radius: 12px;
+      padding: 20px 22px;
+      font-size: 13px;
+      color: #3d3f5a;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>🗂️ Leo Guides</h1>
+    <p>個人教學頁面目錄 · leo-guides.pages.dev</p>
+  </div>
+
+  <!-- Notion / 工具教學 -->
+  <div class="category">
+    <div class="category-title">Notion / 工具教學</div>
+
+    <a class="guide-card" href="https://leo-guides.pages.dev/notion_ma_guide" target="_blank">
+      <div class="guide-icon">🗂️</div>
+      <div class="guide-info">
+        <div class="guide-name">shop.com Notion 系統 — 建立與使用指南</div>
+        <div class="guide-desc">7 個資料庫架構、欄位設計、建立步驟、日常使用情境</div>
+      </div>
+      <div class="guide-meta">
+        <span class="guide-date">2026-04-27</span>
+        <span class="guide-url">/notion_ma_guide</span>
+      </div>
+      <span class="arrow">↗</span>
+    </a>
+  </div>
+
+  <!-- AI 應用 -->
+  <div class="category">
+    <div class="category-title">AI 應用</div>
+    <div class="empty">尚未新增</div>
+  </div>
+
+  <!-- 其他 -->
+  <div class="category">
+    <div class="category-title">其他</div>
+    <div class="empty">尚未新增</div>
+  </div>
+
+</div>
+</body>
+</html>
